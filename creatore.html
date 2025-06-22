@@ -5,21 +5,74 @@
   <title>ZIP File Creator</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.min.js"></script>
   <style>
-    body { font-family: sans-serif; text-align: center; background: #f0f2f5; padding: 20px; }
-    .container { background: #fff; padding: 30px 20px; border-radius: 10px; box-shadow: 0 8px 20px rgba(0,0,0,0.1); max-width: 600px; margin: auto; }
-    input, button { margin: 10px; }
+    body {
+      background: #f0f2f5;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+    .container {
+      background: #fff;
+      padding: 30px 20px;
+      border-radius: 10px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+      max-width: 500px;
+      width: 100%;
+      text-align: center;
+    }
+    .container h1 {
+      margin-bottom: 20px;
+      color: #333;
+    }
+    .container input[type="file"],
+    .container input[type="text"] {
+      width: 90%;
+      max-width: 400px;
+      padding: 12px;
+      margin-bottom: 15px;
+      border: 2px solid #ddd;
+      border-radius: 5px;
+      font-size: 15px;
+      transition: border-color 0.3s;
+    }
+    .container input:focus {
+      border-color: #007bff;
+      outline: none;
+    }
+    .container button {
+      background: #007bff;
+      color: #fff;
+      border: none;
+      padding: 12px 30px;
+      border-radius: 5px;
+      font-size: 15px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .container button:hover {
+      background: #0069d9;
+    }
   </style>
 </head>
 <body>
   <div class="container">
     <h1>ZIP File Creator</h1>
-    <input type="file" id="zipInput" multiple><br/>
+    <input type="file" id="zipInput" multiple>
+    <br/>
+    <input type="text" id="zipName" placeholder="Enter ZIP file name (without .zip)">
+    <br/>
     <button onclick="createZip()">Create & Download ZIP</button>
   </div>
 
   <script>
     async function createZip() {
       const input = document.getElementById('zipInput');
+      const nameInput = document.getElementById('zipName');
+      const zipFileName = nameInput.value.trim() ? nameInput.value.trim() + '.zip' : 'files.zip';
+
       if (input.files.length === 0) {
         alert('Please select files to zip!');
         return;
@@ -33,7 +86,7 @@
       const blob = await zip.generateAsync({ type: "blob" });
       const link = document.createElement('a');
       link.href = URL.createObjectURL(blob);
-      link.download = "files.zip";
+      link.download = zipFileName;
       link.click();
     }
   </script>
